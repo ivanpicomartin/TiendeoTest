@@ -11,9 +11,18 @@ import android.view.ViewGroup;
 
 import com.tiendeo.interviewtest.R;
 import com.tiendeo.interviewtest.adapter.ShopsAdapter;
+import com.tiendeo.interviewtest.data.remote.ShopApi;
+import com.tiendeo.interviewtest.model.Shop;
 import com.tiendeo.interviewtest.view.activity.ShopsActivity;
 
-public class ShopsListFragment extends Fragment {
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class ShopsListFragment extends Fragment implements Callback<List<Shop>> {
 	private RecyclerView shopsView;
 	private ShopsAdapter adapter;
 	private ShopsActivity activity;
@@ -37,8 +46,21 @@ public class ShopsListFragment extends Fragment {
 	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		// Call remote data service
-		// populate list
+		ShopApi shopApi = ShopApi.getInstance();
+		shopApi.getShops(this);
 
 	}
 
+	@Override
+	public void onResponse(Call<List<Shop>> call, Response<List<Shop>> response) {
+		// populate list
+		final List<Shop> shops = new ArrayList<Shop>();
+		shops.addAll(response.body());
+		adapter.setShops(shops);
+	}
+
+	@Override
+	public void onFailure(Call<List<Shop>> call, Throwable t) {
+		// manage error
+	}
 }
