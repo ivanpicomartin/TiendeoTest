@@ -1,4 +1,8 @@
 <resources>
   <string name="app_name">Tiendeo Interview Test</string>
   <string name="title_activity_shops">Shops</string>
+  <string name="error_connection_info">Error connection</string>
+  <string name="error_connection_description">Check your data connection</string>
+  <string name="generic_ok">Ok</string>
+    <string name="error_data_check_you_internet_connection">Error data\nCheck you internet connection.</string>
 </resources>

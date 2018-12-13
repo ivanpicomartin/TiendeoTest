@@ -3,23 +3,28 @@ package com.tiendeo.interviewtest.data.remote;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.tiendeo.interviewtest.model.ErrorEvent;
 import com.tiendeo.interviewtest.model.Shop;
 
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.EventListener;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+/**
+ * Class to access to remote data.
+ */
 public class ShopApi {
 
 	private static final String API_URL = "https://interview-test-45073.firebaseio.com/";
-	private static final String TIENDEO_NAME_OFFICE = "Tiendeo Office";
-	private static final float TIENDEO_MAP_DEFAULT_ZOOM = 16;
-	private static final Double TIENDEO_LATITUDE = 41.380968;
-	private static final Double TIENDEO_LONGITUDE = 2.185584;
-	private static final LatLng TIENDEO = new LatLng(TIENDEO_LATITUDE, TIENDEO_LONGITUDE);
+	public static final int ERROR_CONNECTION_TYPE = -1;
+
 	private static Retrofit retrofit = null;
 
 	private static ShopApi shopApi;
@@ -33,6 +38,7 @@ public class ShopApi {
 
 	private Retrofit startRetrofit() {
 		if (ShopApi.retrofit == null) {
+			// dependency
 			Gson gson = new GsonBuilder()
 					.setLenient()
 					.create();
@@ -50,23 +56,22 @@ public class ShopApi {
 		return startRetrofit().create(ShopApiInterface.class);
 	}
 
-	public void getShops(Callback<List<Shop>> callback) {
+	public void getShops() {
 		ShopApiInterface shopApiInterface = getService();
 
 		Call<List<Shop>> call = shopApiInterface.getShops();
-		call.enqueue(callback);
-	}
+		call.enqueue(new Callback<List<Shop>>() {
+			@Override
+			public void onResponse(Call<List<Shop>> call, Response<List<Shop>> response) {
+				EventBus.getDefault().post(response.body());
+			}
 
-	public static LatLng getTiendeoPosition() {
-		return TIENDEO;
-	}
+			@Override
+			public void onFailure(Call<List<Shop>> call, Throwable t) {
 
-	public static String getTiendeoNameOffice() {
-		return TIENDEO_NAME_OFFICE;
-	}
-
-	public static float getTiendeoMapDefaultZoom() {
-		return TIENDEO_MAP_DEFAULT_ZOOM;
+				EventBus.getDefault().post(new ErrorEvent(ERROR_CONNECTION_TYPE));
+			}
+		});
 	}
 
 }

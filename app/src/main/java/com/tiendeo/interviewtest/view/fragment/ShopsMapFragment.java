@@ -11,57 +11,115 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.tiendeo.interviewtest.data.remote.ShopApi;
+import com.tiendeo.interviewtest.data.local.DefaultData;
 import com.tiendeo.interviewtest.model.Shop;
-import com.tiendeo.interviewtest.view.activity.ShopsActivity;
+import com.tiendeo.interviewtest.presenter.DialogFactory;
+import com.tiendeo.interviewtest.presenter.ShopContract;
+import com.tiendeo.interviewtest.presenter.ShopsMapPresenter;
 
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+public class ShopsMapFragment extends SupportMapFragment implements OnMapReadyCallback, ShopContract.View {
+    private GoogleMap map;
+    private ShopsMapPresenter shopMapPresenter;
 
-public class ShopsMapFragment extends SupportMapFragment implements OnMapReadyCallback, Callback<List<Shop>> {
-	private GoogleMap map;
+    public ShopsMapFragment() {
+        super();
+    }
 
-	public ShopsMapFragment() {
-		super();
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        shopMapPresenter = ShopsMapPresenter.getInstance(this);
+    }
+    @Override
+    public View onCreateView(LayoutInflater layoutInflater, ViewGroup container, Bundle bundle) {
+        View view = super.onCreateView(layoutInflater, container, bundle);
+        getMapAsync(this);
+        return view;
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        map = googleMap;
+        map.addMarker(new MarkerOptions()
+            .position(DefaultData.getTiendeoPosition())
+            .title(DefaultData.getTiendeoNameOffice()));
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(
+            DefaultData.getTiendeoPosition(),
+            DefaultData.getTiendeoMapDefaultZoom()));
+
+        shopMapPresenter.load();
+
+    }
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		shopMapPresenter.attach();
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater layoutInflater, ViewGroup container, Bundle bundle) {
-		View view = super.onCreateView(layoutInflater, container, bundle);
-		getMapAsync(this);
-		return view;
+	public void onPause() {
+		super.onPause();
+		shopMapPresenter.detach();
 	}
 
-	@Override
-	public void onMapReady(GoogleMap googleMap) {
-		map = googleMap;
-		map.addMarker(new MarkerOptions().position(ShopApi.getTiendeoPosition()).title(ShopApi.getTiendeoNameOffice()));
-		map.moveCamera(CameraUpdateFactory.newLatLngZoom(ShopApi.getTiendeoPosition(), ShopApi.getTiendeoMapDefaultZoom()));
+    @Override
+    public void addResults(List<Shop> shopList) {
+        for (final Shop shop : shopList) {
+            final LatLng location =
+                    new LatLng(Float.valueOf(shop.getLatitude().replace(",", ".")),
+                            Float.valueOf(shop.getLongitude().replace(",", ".")));
+            this.getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    map.addMarker(new MarkerOptions()
+                            .position(location)
+                            .title(shop.getRetailerName())
+                            .snippet(shop.getAddressStreet()));
+                }
+            });
+        }
+    }
 
-		ShopApi shopApi = ShopApi.getInstance();
-		shopApi.getShops(this);
-	}
+    @Override
+    public void showList() {
 
-	@Override
-	public void onResponse(Call<List<Shop>> call, Response<List<Shop>> response) {
+    }
 
-		for (final Shop shop : response.body()) {
-			final LatLng location =
-					new LatLng(Float.valueOf(shop.getLatitude().replace(",", ".")), Float.valueOf(shop.getLongitude().replace(",", ".")));
-			this.getActivity().runOnUiThread(new Runnable() {
-				@Override
-				public void run() {
-					map.addMarker(new MarkerOptions().position(location).title(shop.getRetailerName()).snippet(shop.getAddressStreet()));
-				}
-			});
-		}
-	}
+    @Override
+    public void clearList() {
 
-	@Override
-	public void onFailure(Call<List<Shop>> call, Throwable t) {
-		// Manage the error
-	}
+    }
+
+    @Override
+    public void showListLoading() {
+
+    }
+
+    @Override
+    public void hideListLoading() {
+
+    }
+
+    @Override
+    public void showContentError() {
+        DialogFactory.createErrorConnectionAlert(getContext());
+    }
+
+    @Override
+    public void hideContentError() {
+
+    }
+
+    @Override
+    public void showEmptyResultsView() {
+
+    }
+
+    @Override
+    public void hideEmptyResultsView() {
+
+    }
 }

@@ -3,15 +3,18 @@ package com.tiendeo.interviewtest.view.activity;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.tiendeo.interviewtest.R;
 import com.tiendeo.interviewtest.adapter.ShopsPagerAdapter;
+import com.tiendeo.interviewtest.model.Shop;
+import com.tiendeo.interviewtest.presenter.ShopContract;
 
-public class ShopsActivity extends AppCompatActivity implements OnMapReadyCallback {
+import java.util.List;
+
+public class ShopsActivity extends BaseActivity implements OnMapReadyCallback, ShopContract.View {
 
 	private ViewPager viewPager;
 	private ShopsPagerAdapter pagerAdapter;
@@ -40,4 +43,50 @@ public class ShopsActivity extends AppCompatActivity implements OnMapReadyCallba
 	public void onMapReady(GoogleMap googleMap) {
 
 	}
+
+	@Override
+	public void showEmptyResultsView() {
+
+	}
+
+	@Override
+	public void hideEmptyResultsView() {
+
+	}
+
+	@Override
+	public void addResults(List<Shop> shopList) {
+
+	}
+
+	@Override
+	public void showList() {
+
+	}
+
+	@Override
+	public void clearList() {
+
+	}
+
+	@Override
+	public void showListLoading() {
+
+	}
+
+	@Override
+	public void hideListLoading() {
+
+	}
+
+	@Override
+	public void showContentError() {
+
+	}
+
+	@Override
+	public void hideContentError() {
+
+	}
+
 }

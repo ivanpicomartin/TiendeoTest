@@ -4,11 +4,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.tiendeo.interviewtest.view.activity.ShopsActivity;
-import com.tiendeo.interviewtest.view.fragment.ShopsListFragment;
+import com.tiendeo.interviewtest.view.fragment.ShopListFragment;
 import com.tiendeo.interviewtest.view.fragment.ShopsMapFragment;
 
 public class ShopsPagerAdapter extends FragmentPagerAdapter {
+
+	private static final int PAGE_NUMBER = 2;
 
 	public ShopsPagerAdapter(FragmentManager fm) {
 		super(fm);
@@ -16,13 +17,13 @@ public class ShopsPagerAdapter extends FragmentPagerAdapter {
 
 	@Override
 	public Fragment getItem(int position) {
-		if (position == 0) return new ShopsListFragment();
+		if (position == 0) return new ShopListFragment();
 		return new ShopsMapFragment();
 	}
 
 	@Override
 	public int getCount() {
-		return 2;
+		return PAGE_NUMBER;
 	}
 
 	@Override
