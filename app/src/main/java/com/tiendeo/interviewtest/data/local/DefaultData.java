@@ -4,11 +4,17 @@ import com.google.android.gms.maps.model.LatLng;
 
 public class DefaultData {
 
+    private static final String DATABASE_LOCAL_NAME = "tiendeo_database";
+
     private static final String TIENDEO_NAME_OFFICE = "Tiendeo Office";
     private static final float TIENDEO_MAP_DEFAULT_ZOOM = 16;
     private static final Double TIENDEO_LATITUDE = 41.380968;
     private static final Double TIENDEO_LONGITUDE = 2.185584;
     private static final LatLng TIENDEO = new LatLng(TIENDEO_LATITUDE, TIENDEO_LONGITUDE);
+
+    public static String getDatabaseName() {
+        return DATABASE_LOCAL_NAME;
+    }
 
     public static String getTiendeoNameOffice() {
         return TIENDEO_NAME_OFFICE;

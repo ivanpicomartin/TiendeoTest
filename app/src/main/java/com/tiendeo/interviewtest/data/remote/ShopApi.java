@@ -1,6 +1,5 @@
 package com.tiendeo.interviewtest.data.remote;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.tiendeo.interviewtest.model.ErrorEvent;
@@ -8,7 +7,6 @@ import com.tiendeo.interviewtest.model.Shop;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.EventListener;
 import java.util.List;
 
 import retrofit2.Call;

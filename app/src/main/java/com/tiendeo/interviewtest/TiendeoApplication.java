@@ -1,6 +1,7 @@
 package com.tiendeo.interviewtest;
 
 import android.app.Application;
+import android.content.Context;
 
 public class TiendeoApplication extends Application {
 
@@ -9,5 +10,4 @@ public class TiendeoApplication extends Application {
 		super.onCreate();
 
 	}
-
 }
