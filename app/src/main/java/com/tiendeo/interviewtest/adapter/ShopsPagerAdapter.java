@@ -7,6 +7,9 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.tiendeo.interviewtest.view.fragment.ShopListFragment;
 import com.tiendeo.interviewtest.view.fragment.ShopsMapFragment;
 
+/**
+ * Manage shop pager adapter.
+ */
 public class ShopsPagerAdapter extends FragmentPagerAdapter {
 
 	private static final int PAGE_NUMBER = 2;

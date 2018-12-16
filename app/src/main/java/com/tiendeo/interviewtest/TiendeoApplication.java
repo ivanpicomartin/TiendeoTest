@@ -1,8 +1,10 @@
 package com.tiendeo.interviewtest;
 
 import android.app.Application;
-import android.content.Context;
 
+/**
+ * Application class.
+ */
 public class TiendeoApplication extends Application {
 
 	@Override

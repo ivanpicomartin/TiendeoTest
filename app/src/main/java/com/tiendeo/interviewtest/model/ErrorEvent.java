@@ -1,5 +1,8 @@
 package com.tiendeo.interviewtest.model;
 
+/**
+ * Entity to manage application errors.
+ */
 public class ErrorEvent {
 
     private int type;

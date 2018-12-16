@@ -4,9 +4,11 @@ import android.arch.persistence.room.Room;
 import android.content.Context;
 
 /**
- * local database instance
+ * local database instance.
  */
 public class LocalDatabase {
+
+	private static final String DATABASE_LOCAL_NAME = "tiendeo_database";
 
 	private static AppDatabase db;
 	private static LocalDatabase localDatabase;
@@ -16,7 +18,7 @@ public class LocalDatabase {
 			localDatabase = new LocalDatabase();
 			db = Room.databaseBuilder(context,
 					AppDatabase.class,
-					DefaultData.getDatabaseName()).build();
+					DATABASE_LOCAL_NAME).build();
 		}
 		return localDatabase;
 	}

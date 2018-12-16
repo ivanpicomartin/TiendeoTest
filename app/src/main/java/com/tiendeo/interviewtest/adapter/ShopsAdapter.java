@@ -12,10 +12,14 @@ import com.tiendeo.interviewtest.model.Shop;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Adapter for a list shops.
+ */
 public class ShopsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 	List<Shop> shops = new ArrayList<Shop>();
 
 	public void setShops(List<Shop> shops) {
+		this.shops.clear();
 		this.shops.addAll(shops);
 		notifyDataSetChanged();
 	}

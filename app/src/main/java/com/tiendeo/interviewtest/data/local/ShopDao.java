@@ -9,6 +9,9 @@ import com.tiendeo.interviewtest.model.Shop;
 
 import java.util.List;
 
+/**
+ * Shop dao.
+ */
 @Dao
 public interface ShopDao {
 

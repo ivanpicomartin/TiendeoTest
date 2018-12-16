@@ -16,10 +16,13 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
+/**
+ * Map fragment presenter.
+ */
 public class ShopsMapPresenter extends BasePresenter implements ShopContract.Presenter {
 
-
     private static ShopsMapPresenter shopsMapPresenter;
+    // view reference
     private static ShopsMapFragment shopsMapFragment;
 
     public static ShopsMapPresenter getInstance(ShopsMapFragment smFragment) {

@@ -15,9 +15,14 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
+/**
+ * Listfragment presenter.
+ *
+ */
 public class ShopListPresenter extends BasePresenter implements ShopContract.Presenter {
 
 	private static ShopListPresenter shopListPresenter;
+	// shop list view
 	private static ShopListFragment shopListFragment;
 
 	public ShopListPresenter() {
@@ -36,6 +41,18 @@ public class ShopListPresenter extends BasePresenter implements ShopContract.Pre
 	public void load() {
 		shopListFragment.hideContentError();
 		shopListFragment.showListLoading();
+		Runnable runnable = new Runnable() {
+			@Override
+			public void run() {
+				AppDatabase db = LocalDatabase
+						.getInstance(shopListFragment.getContext())
+						.getDb();
+				List<Shop> list = db.shopDao().getAll();
+				showShops(list);
+			}
+		};
+		AsyncTask.execute(runnable);
+
 		ShopApi shopApi = ShopApi.getInstance();
 		shopApi.getShops();
 	}
@@ -62,6 +79,22 @@ public class ShopListPresenter extends BasePresenter implements ShopContract.Pre
 
 	@Subscribe(threadMode = ThreadMode.MAIN)
 	public void onMessageEvent(final List<Shop> shopList) {
+		showShops(shopList);
+	}
+
+	;
+
+	@Subscribe(threadMode = ThreadMode.MAIN)
+	public void onMessageEvent(ErrorEvent errorEvent) {
+		if (errorEvent.getType() == ShopApi.ERROR_CONNECTION_TYPE) {
+			shopListFragment.hideListLoading();
+			shopListFragment.showContentError();
+		}
+	}
+
+	// save and show shops on list.
+	private void showShops(final List<Shop> shopList) {
+
 		Runnable runnable = new Runnable() {
 			@Override
 			public void run() {
@@ -75,16 +108,4 @@ public class ShopListPresenter extends BasePresenter implements ShopContract.Pre
 		shopListFragment.hideListLoading();
 		shopListFragment.addResults(shopList);
 	}
-
-	;
-
-	@Subscribe(threadMode = ThreadMode.MAIN)
-	public void onMessageEvent(ErrorEvent errorEvent) {
-		if (errorEvent.getType() == ShopApi.ERROR_CONNECTION_TYPE) {
-			shopListFragment.hideListLoading();
-			shopListFragment.showContentError();
-		}
-	}
-
-	;
 }

@@ -10,7 +10,7 @@ import com.tiendeo.interviewtest.data.remote.ShopApi;
 import com.tiendeo.interviewtest.model.ErrorEvent;
 
 /**
- * Create alert, toast, dialog,... for user.
+ * Create alert, toast, dialog,... as response to an user interaction.
  */
 public class DialogFactory {
 

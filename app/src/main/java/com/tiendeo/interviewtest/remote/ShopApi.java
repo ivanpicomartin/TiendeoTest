@@ -3,6 +3,9 @@ package com.tiendeo.interviewtest.remote;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+/**
+ * Retrofit service declaration.
+ */
 public class ShopApi {
 
     private static final String API_URL = "https://interview-test-45073.firebaseio.com/";

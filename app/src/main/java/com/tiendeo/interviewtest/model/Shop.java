@@ -8,7 +8,7 @@ import android.support.annotation.NonNull;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by juanlu on 3/8/16.
+ * Shop entity.
  */
 @Entity
 public class Shop {
